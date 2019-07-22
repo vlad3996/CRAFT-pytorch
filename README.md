@@ -1,5 +1,5 @@
 ## CRAFT: Character-Region Awareness For Text detection
-Official Pytorch implementation of CRAFT text detector | [Paper](https://arxiv.org/abs/1904.01941) | [Pretrained Model](https://drive.google.com/open?id=1Jk4eGD7crsqCCg9C9VjCLkMN3ze8kutZ) | [Supplementary](https://youtu.be/HI8MzpY8KMI)
+[Paper](https://arxiv.org/abs/1904.01941) | [Pretrained Model](https://drive.google.com/open?id=1Jk4eGD7crsqCCg9C9VjCLkMN3ze8kutZ) | [Supplementary](https://youtu.be/HI8MzpY8KMI)
 
 **[Youngmin Baek](mailto:youngmin.baek@navercorp.com), Bado Lee, Dongyoon Han, Sangdoo Yun, Hwalsuk Lee.**
  
@@ -12,47 +12,34 @@ PyTorch implementation for CRAFT text detector that effectively detect text area
 
 <img width="1000" alt="teaser" src="./figures/craft_example.gif">
 
-## Updates
-**13 Jun, 2019**: Initial update
+### Simple inference example
+
+```python
+
+from inference_utils import load_image, load_detector, test_net, visualize_detection
+
+checkpoint_path = 'weights/craft_mlt_25k.pth'
+device = 'cuda'
+
+net = load_detector(checkpoint_path, device)
+ 
+image_size = 1280  # image size for inference
+mag_ratio = 1.5  # image magnification ratio
+
+poly = False  # enable polygon type
+text_threshold = 0.7  # text confidence threshold
+low_text = 0.4  # text low-bound score
+link_threshold = 0.4  # link confidence threshold
 
 
-## Getting started
-### Install dependencies
-#### Requirements
-- PyTorch>=0.4.1
-- torchvision>=0.2.1
-- opencv-python>=3.4.2
-- check requiremtns.txt
+image = load_image('/home/vladislav.leketush/Documents/chester_minsk_20.07.2019.jpg')
+
+bboxes, polys, score_text = test_net(net, image, image_size, mag_ratio, text_threshold, link_threshold, low_text, device, poly)
+
+visualize_detection(image, bboxes)
+
 ```
-pip install -r requirements.txt
-```
-
-### Training
-We are currently in the process of cleaning training code for disclosure.
-
-### Test instruction using pretrained model
-- Download [Trained Model on IC13,IC17](https://drive.google.com/open?id=1Jk4eGD7crsqCCg9C9VjCLkMN3ze8kutZ)
-* Run with pretrained model
-``` (with python 3.7)
-python test.py --trained_model=[weightfile] --test_folder=[folder path to test images]
-```
-
-The result image and socre maps will be saved to `./result` by default.
-
-### Arguments
-* `--trained_model`: pretrained model
-* `--text_threshold`: text confidence threshold
-* `--low_text`: text low-bound score
-* `--link_threshold`: link confidence threshold
-* `--canvas_size`: max image size for inference
-* `--mag_ratio`: image magnification ratio
-* `--poly`: enable polygon type result
-* `--show_time`: show processing time
-* `--test_folder`: folder path to input images
-
-## Links
-- WebDemo : https://demo.ocr.clova.ai/
-- Repo of recognition : https://github.com/clovaai/deep-text-recognition-benchmark
+<img width="1000" alt="example" src="./figures/chester_minsk_20.07.2019_output.jpg">
 
 ## Citation
 ```

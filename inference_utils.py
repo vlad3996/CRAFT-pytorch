@@ -5,7 +5,7 @@ import numpy as np
 import craft_utils
 import imgproc
 import matplotlib.pyplot as plt
-
+from imgproc import loadImage as load_image
 from craft import CRAFT
 
 from collections import OrderedDict
@@ -65,7 +65,7 @@ def test_net(net, image, image_size, mag_ratio, text_threshold, link_threshold, 
     return boxes, polys, ret_score_text
 
 
-def visualize_detection(img, boxes, texts=None):
+def visualize_detection(img, boxes, texts=None, figsize=(18,10)):
     img = np.array(img)[:,:,::-1].copy()
 
     for i, box in enumerate(boxes):
@@ -81,7 +81,7 @@ def visualize_detection(img, boxes, texts=None):
                         thickness=1)
             cv2.putText(img, "{}".format(texts[i]), tuple(poly[0]), font, font_scale, (0, 255, 255), thickness=1)
 
-    plt.figure(figsize=(18,10))
+    plt.figure(figsize=figsize)
     plt.imshow(img[:,:,::-1])
     plt.show()
 
